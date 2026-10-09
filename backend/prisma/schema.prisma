@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  zones Zone[]
+
+  @@map("users")
+}
+
+model Zone {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  zoneNumber Int
+  name       String
+  createdAt  DateTime @default(now())
+
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  temperature   TemperatureReading[]
+  humidity      HumidityReading[]
+  soilMoisture  SoilMoistureReading[]
+  light         LightReading[]
+  plantHealth   PlantHealth[]
+
+  @@unique([userId, zoneNumber])
+  @@map("zones")
+}
+
+model TemperatureReading {
+  id         Int      @id @default(autoincrement())
+  zoneId     Int
+  value      Float
+  recordedAt DateTime @default(now())
+
+  zone Zone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@index([zoneId, recordedAt])
+  @@map("temperature_readings")
+}
+
+model HumidityReading {
+  id         Int      @id @default(autoincrement())
+  zoneId     Int
+  value      Float
+  recordedAt DateTime @default(now())
+
+  zone Zone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@index([zoneId, recordedAt])
+  @@map("humidity_readings")
+}
+
+model SoilMoistureReading {
+  id         Int      @id @default(autoincrement())
+  zoneId     Int
+  value      Float
+  recordedAt DateTime @default(now())
+
+  zone Zone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@index([zoneId, recordedAt])
+  @@map("soil_moisture_readings")
+}
+
+model LightReading {
+  id         Int      @id @default(autoincrement())
+  zoneId     Int
+  value      Float
+  recordedAt DateTime @default(now())
+
+  zone Zone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@index([zoneId, recordedAt])
+  @@map("light_readings")
+}
+
+enum HealthStatus {
+  HEALTHY
+  DISEASED
+  UNCERTAIN
+}
+
+model PlantHealth {
+  id          Int          @id @default(autoincrement())
+  zoneId      Int
+  status      HealthStatus
+  diseaseName String?
+  confidence  Float?
+  checkedAt   DateTime     @default(now())
+
+  zone Zone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@index([zoneId, checkedAt])
+  @@map("plant_health")
+}
