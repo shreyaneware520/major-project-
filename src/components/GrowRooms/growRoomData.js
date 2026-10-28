@@ -1,0 +1,180 @@
+// ─── Mock Grow Room Data ────────────────────────────────────────────────
+
+export const generateSparkline = (base, variance, points = 12) => {
+  return Array.from({ length: points }, () => ({
+    v: parseFloat((base + (Math.random() - 0.5) * variance * 2).toFixed(1)),
+  }));
+};
+
+export const MOCK_GROW_ROOMS = [
+  {
+    id: 'GR-001',
+    name: 'Hydroponics Alpha',
+    zone: 'Zone A',
+    crop: 'Romaine Lettuce',
+    cropIcon: '🥬',
+    growthStage: 'Vegetative',
+    status: 'online',
+    health: 'Healthy',
+    sensorId: 'SENSOR-ZONE-A4',
+    metrics: {
+      temperature: 24.2,
+      humidity: 68.5,
+      soilPh: 6.4,
+      light: 850,
+      moisture: 72.4,
+      waterFlow: 4.2,
+    },
+    tempChange: 1.3,
+    humidityChange: -0.8,
+    sparkTemp: generateSparkline(24, 2),
+    sparkHumidity: generateSparkline(68, 4),
+    lastSync: new Date(Date.now() - 1000 * 30).toISOString(),
+    daysActive: 34,
+    yieldPrediction: 480,
+  },
+  {
+    id: 'GR-002',
+    name: 'Vertical Farm Beta',
+    zone: 'Zone B',
+    crop: 'Cherry Tomatoes',
+    cropIcon: '🍅',
+    growthStage: 'Flowering',
+    status: 'online',
+    health: 'Healthy',
+    sensorId: 'SENSOR-ZONE-B2',
+    metrics: {
+      temperature: 26.8,
+      humidity: 72.1,
+      soilPh: 6.1,
+      light: 1100,
+      moisture: 65.3,
+      waterFlow: 5.1,
+    },
+    tempChange: 0.5,
+    humidityChange: 1.2,
+    sparkTemp: generateSparkline(26, 2.5),
+    sparkHumidity: generateSparkline(72, 3),
+    lastSync: new Date(Date.now() - 1000 * 45).toISOString(),
+    daysActive: 58,
+    yieldPrediction: 620,
+  },
+  {
+    id: 'GR-003',
+    name: 'Greenhouse Gamma',
+    zone: 'Zone A',
+    crop: 'Basil Herbs',
+    cropIcon: '🌿',
+    growthStage: 'Seedling',
+    status: 'online',
+    health: 'Needs Attention',
+    sensorId: 'SENSOR-ZONE-A7',
+    metrics: {
+      temperature: 29.4,
+      humidity: 55.2,
+      soilPh: 5.6,
+      light: 600,
+      moisture: 48.7,
+      waterFlow: 2.8,
+    },
+    tempChange: 3.1,
+    humidityChange: -4.5,
+    sparkTemp: generateSparkline(29, 3),
+    sparkHumidity: generateSparkline(55, 5),
+    lastSync: new Date(Date.now() - 1000 * 120).toISOString(),
+    daysActive: 12,
+    yieldPrediction: 180,
+  },
+  {
+    id: 'GR-004',
+    name: 'Aeroponic Delta',
+    zone: 'Zone C',
+    crop: 'Strawberries',
+    cropIcon: '🍓',
+    growthStage: 'Harvest-Ready',
+    status: 'online',
+    health: 'Healthy',
+    sensorId: 'SENSOR-ZONE-C1',
+    metrics: {
+      temperature: 22.1,
+      humidity: 74.8,
+      soilPh: 6.3,
+      light: 920,
+      moisture: 78.2,
+      waterFlow: 3.9,
+    },
+    tempChange: -0.4,
+    humidityChange: 0.9,
+    sparkTemp: generateSparkline(22, 1.5),
+    sparkHumidity: generateSparkline(74, 2),
+    lastSync: new Date(Date.now() - 1000 * 15).toISOString(),
+    daysActive: 92,
+    yieldPrediction: 540,
+  },
+  {
+    id: 'GR-005',
+    name: 'NFT Channel Epsilon',
+    zone: 'Zone B',
+    crop: 'Spinach',
+    cropIcon: '🥗',
+    growthStage: 'Vegetative',
+    status: 'alert',
+    health: 'Critical',
+    sensorId: 'SENSOR-ZONE-B5',
+    metrics: {
+      temperature: 31.7,
+      humidity: 42.3,
+      soilPh: 7.8,
+      light: 380,
+      moisture: 35.1,
+      waterFlow: 1.2,
+    },
+    tempChange: 5.8,
+    humidityChange: -12.3,
+    sparkTemp: generateSparkline(31, 4),
+    sparkHumidity: generateSparkline(42, 6),
+    lastSync: new Date(Date.now() - 1000 * 600).toISOString(),
+    daysActive: 27,
+    yieldPrediction: 220,
+  },
+  {
+    id: 'GR-006',
+    name: 'Deep Water Culture Zeta',
+    zone: 'Zone C',
+    crop: 'Kale',
+    cropIcon: '🥬',
+    growthStage: 'Flowering',
+    status: 'offline',
+    health: 'Needs Attention',
+    sensorId: 'SENSOR-ZONE-C3',
+    metrics: {
+      temperature: 0,
+      humidity: 0,
+      soilPh: 0,
+      light: 0,
+      moisture: 0,
+      waterFlow: 0,
+    },
+    tempChange: 0,
+    humidityChange: 0,
+    sparkTemp: generateSparkline(20, 1),
+    sparkHumidity: generateSparkline(60, 2),
+    lastSync: new Date(Date.now() - 1000 * 3600 * 4).toISOString(),
+    daysActive: 45,
+    yieldPrediction: 310,
+  },
+];
+
+// ─── Utility Helpers ────────────────────────────────────────────────────
+
+export const formatTimeAgo = (timeStr) => {
+  if (!timeStr) return 'N/A';
+  try {
+    const diff = Date.now() - new Date(timeStr).getTime();
+    if (diff < 60000) return `${Math.floor(diff / 1000)}s ago`;
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    return `${Math.floor(diff / 3600000)}h ago`;
+  } catch {
+    return timeStr;
+  }
+};
